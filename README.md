@@ -20,11 +20,11 @@ I think it's worth noting what I learned during this exercise.
 
 - How to create a Java desktop app in Eclipse.
 - How to create Java Classes and Interfaces.
-- Importing Java packages into Eclipse.
+- How to import Java packages into Eclipse.
 - How to debug Java build errors.
 - How to handle Graphics and Input in JavaFX.
 - How to use GitHub Desktop alongside Eclipse.
-- How .gitignore works.
+- How to create a .gitignore file.
 - How to load file resources in Java.
 
 I found that planning out a project beforehand is important. I had initially written many lines of code with the expectation that I would use them. Over the past few days, however, I found much more efficient or intuitive methods to use. 
