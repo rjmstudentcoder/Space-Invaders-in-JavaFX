@@ -1,7 +1,6 @@
 package com.roy.util.whisp;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class StencilImage {
 	public Image image;
