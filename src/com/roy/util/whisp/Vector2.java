@@ -1,6 +1,7 @@
 package com.roy.util.whisp;
 
 public class Vector2 {
+
 	public float x;
 	public float y;
 
@@ -8,10 +9,14 @@ public class Vector2 {
 		this.x = newX;
 		this.y = newY;
 	}
-	
+
 	public Vector2(Vector2 b) {
 		this.x = b.x;
 		this.y = b.y;
+	}
+
+	public static Vector2 zero() {
+		return new Vector2(0, 0);
 	}
 
 	public static Vector2 add(Vector2 a, Vector2 b) {
