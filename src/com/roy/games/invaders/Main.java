@@ -36,6 +36,13 @@ public class Main extends Application implements WspStencil {
 		graphics_context.drawImage(image.image, image.spriteOffset.x, image.spriteOffset.y, image.spriteSize.x,
 				image.spriteSize.y, Math.floor(position.x - size.x / 2) * scaleMultiplier.x, Math.floor(position.y - size.y / 2) * scaleMultiplier.x, size.x * scaleMultiplier.x, size.y * scaleMultiplier.x);
 	};
+	
+	public void drawEntityArray(ArrayList<? extends Entity> entities) {
+		for (int i=0; i < entities.size(); i++) {
+			Entity entity = entities.get(i);
+			drawImage(entity.image, entity.position, entity.image.size, 0);
+		}
+	}
 
 	public Vector2 getScreenResolution() {
 		return this.resolution;
@@ -102,14 +109,8 @@ public class Main extends Application implements WspStencil {
 
 	public void draw(double dt) {
 		drawImage(player.image, player.position, player.image.size, 0);
-		for (int i=0; i < aliens.size(); i++) {
-			Alien alien = aliens.get(i);
-			drawImage(alien.image, alien.position, alien.image.size, 0);
-		}
-		for (int i=0; i < lasers.size(); i++) {
-			Laser laser = lasers.get(i);
-			drawImage(laser.image, laser.position, laser.image.size, 0);
-		}
+		drawEntityArray(aliens);
+		drawEntityArray(lasers);
 		graphics_context.setFill(Color.WHITE);
 		graphics_context.fillRect(0, 0, resolution.x * scaleMultiplier.x, 1 * scaleMultiplier.y);
 	}
