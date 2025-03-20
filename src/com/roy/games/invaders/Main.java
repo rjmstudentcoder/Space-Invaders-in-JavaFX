@@ -1,17 +1,17 @@
 package com.roy.games.invaders;
 
 import com.roy.util.whisp.WspStencil;
+import com.roy.util.whisp.StencilImage;
 import com.roy.util.whisp.Vector2;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application; 
 import javafx.scene.Scene; 
-//import javafx.scene.control.*; 
-import javafx.scene.layout.*; 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage; 
-import javafx.event.ActionEvent; 
 import javafx.event.EventHandler; 
-import javafx.scene.canvas.*; 
+import javafx.scene.canvas.*;
 import javafx.scene.paint.Color; 
 import javafx.scene.Group; 
 
@@ -22,10 +22,11 @@ public class Main extends Application implements WspStencil {
 	public long clock;
 	public Canvas canvas;
 	GraphicsContext graphics_context;
-	public float i;
+	Player player;
+	Alien aliens;
 	
-	public void drawImage(String image, Vector2 position, Vector2 size, int rotation) {
-		
+	public void drawImage(StencilImage image, Vector2 position, Vector2 size, int rotation) {
+		graphics_context.drawImage(image.image, image.spriteOffset.x, image.spriteOffset.y, image.spriteSize.x, image.spriteSize.y,  position.x, position.y, size.x, size.y);
 	};
 		
 	public Vector2 getScreenResolution() {
@@ -41,12 +42,13 @@ public class Main extends Application implements WspStencil {
 	};
 	
 	public void update(double dt) {
-		i += dt * 100;
+		player.update(dt);
 	}
 	
 	public void draw(double dt) {
+		drawImage(player.image, player.position, player.image.size, 0);
 		graphics_context.setFill(Color.WHITE); 
-		graphics_context.fillRect(0, 0, 192, i); 
+		graphics_context.fillRect(0, 0, 192, 1); 
 	}
 
 	 public void start(Stage stage) { 
@@ -67,9 +69,29 @@ public class Main extends Application implements WspStencil {
 	        Scene scene = new Scene(group, resolution.x, resolution.y); 
 	        stage.setScene(scene); 
 	        stage.show(); 
-		        
-	        i = 0; // Remove later.
-	       
+	        
+	        player = new Player(new Vector2( resolution.x / 2, 0 ), 0, resolution.x);
+
+	        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+	            @Override
+	            public void handle(KeyEvent keyEvent) {
+	            	KeyCode code = keyEvent.getCode();
+	            	if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+		                if ( code == KeyCode.LEFT && player.controlDeltaX != 1) {
+		                	player.controlDeltaX = -1;
+		                } else if ( code == KeyCode.RIGHT && player.controlDeltaX != -1 ) {
+		                	player.controlDeltaX = 1;
+		                }
+	            	} else if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
+	            		 if ( code == KeyCode.LEFT && player.controlDeltaX == -1) {
+	            			 player.controlDeltaX = 0;
+			              } else if ( code == KeyCode.RIGHT && player.controlDeltaX == 1 ) {
+			            	 player.controlDeltaX = 0;
+			              }
+	            	}
+	            }
+	        });
+	        
 	        clock = System.nanoTime();
 	        AnimationTimer animator = new AnimationTimer() {
 	            @Override
