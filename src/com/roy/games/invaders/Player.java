@@ -20,7 +20,7 @@ public class Player {
 	}
 	
 	public void update(double dt) {
-		float difference = (float)(position.x + (controlDeltaX *  dt));
+		float difference = (float)(position.x + (controlDeltaX *  dt * 100));
 		position.x = Math.min(Math.max(difference, minX), maxX);
 	}
 }

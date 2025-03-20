@@ -10,7 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage; 
-import javafx.event.EventHandler; 
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color; 
 import javafx.scene.Group; 
@@ -26,7 +27,7 @@ public class Main extends Application implements WspStencil {
 	Alien aliens;
 	
 	public void drawImage(StencilImage image, Vector2 position, Vector2 size, int rotation) {
-		graphics_context.drawImage(image.image, image.spriteOffset.x, image.spriteOffset.y, image.spriteSize.x, image.spriteSize.y,  position.x, position.y, size.x, size.y);
+		graphics_context.drawImage(image.image, image.spriteOffset.x, image.spriteOffset.y, image.spriteSize.x, image.spriteSize.y,  position.x - size.x/2, position.y - size.y/2, size.x, size.y);
 	};
 		
 	public Vector2 getScreenResolution() {
@@ -70,27 +71,38 @@ public class Main extends Application implements WspStencil {
 	        stage.setScene(scene); 
 	        stage.show(); 
 	        
-	        player = new Player(new Vector2( resolution.x / 2, 0 ), 0, resolution.x);
+	        player = new Player(new Vector2( resolution.x / 2, resolution.y - 20 ), 0, resolution.x);
 
 	        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 	            @Override
 	            public void handle(KeyEvent keyEvent) {
+	            	EventType<KeyEvent> event = keyEvent.getEventType();
 	            	KeyCode code = keyEvent.getCode();
-	            	if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+	            	if (event == KeyEvent.KEY_PRESSED) {
 		                if ( code == KeyCode.LEFT && player.controlDeltaX != 1) {
 		                	player.controlDeltaX = -1;
 		                } else if ( code == KeyCode.RIGHT && player.controlDeltaX != -1 ) {
 		                	player.controlDeltaX = 1;
 		                }
-	            	} else if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
-	            		 if ( code == KeyCode.LEFT && player.controlDeltaX == -1) {
+	            	} 
+	            }
+	        });
+	        
+	        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+	            @Override
+	            public void handle(KeyEvent keyEvent) {
+	            	EventType<KeyEvent> event = keyEvent.getEventType();
+	            	KeyCode code = keyEvent.getCode();
+	            	if (event == KeyEvent.KEY_RELEASED) {
+	            		 if ( code == KeyCode.LEFT && player.controlDeltaX == -1 ) {
 	            			 player.controlDeltaX = 0;
-			              } else if ( code == KeyCode.RIGHT && player.controlDeltaX == 1 ) {
-			            	 player.controlDeltaX = 0;
-			              }
+	    	              } else if ( code == KeyCode.RIGHT  && player.controlDeltaX == 1) {
+	    	            	 player.controlDeltaX = 0;
+	    	              }
 	            	}
 	            }
 	        });
+	    
 	        
 	        clock = System.nanoTime();
 	        AnimationTimer animator = new AnimationTimer() {
@@ -100,6 +112,8 @@ public class Main extends Application implements WspStencil {
 	                double dt = (double) ((current_time - clock) / 1000000000.0);
 	                if (0.03 <= dt) {
 	                	update(dt);
+	                	graphics_context.setFill(Color.BLACK); 
+	        	        graphics_context.fillRect(0, 0, resolution.x, resolution.y); 
 	                	draw(dt);
 	                	clock = current_time;
 	                }
