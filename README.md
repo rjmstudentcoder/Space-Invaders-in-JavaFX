@@ -1,5 +1,7 @@
 A video game built in Java using Eclipse IDE and JavaFX. 
 
+![Video Demo](https://github.com/rjmstudentcoder/Space-Invaders-in-JavaFX/blob/main/preview.gif?raw=true)
+
 # Controls
 |Key | Desc |
 | -- | -- |
