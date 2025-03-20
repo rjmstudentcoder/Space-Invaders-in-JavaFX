@@ -20,7 +20,10 @@ public class Main extends Application implements WspStencil {
 	public float aspectRatio;
 	public Vector2 resolution;
 	public long clock;
-
+	public Canvas canvas;
+	GraphicsContext graphics_context;
+	public float i;
+	
 	public void drawImage(String image, Vector2 position, Vector2 size, int rotation) {
 		
 	};
@@ -36,17 +39,24 @@ public class Main extends Application implements WspStencil {
 	public float getAspectRatio() {
 		return this.aspectRatio;
 	};
+	
+	public void update(double dt) {
+		i += dt * 100;
+	}
+	
+	public void draw(double dt) {
+		graphics_context.setFill(Color.WHITE); 
+		graphics_context.fillRect(0, 0, 192, i); 
+	}
 
-	 public void start(Stage stage) 
-	    { 
+	 public void start(Stage stage) { 
 	        stage.setTitle("Space Invaders"); 
 
-	        Canvas canvas = new Canvas(); 
+	        canvas = new Canvas(); 
 	        canvas.setHeight(160); 
 	        canvas.setWidth(192); 
 
-	        GraphicsContext graphics_context =  canvas.getGraphicsContext2D(); 
-	 
+	        graphics_context =  canvas.getGraphicsContext2D(); 
 	        graphics_context.setFill(Color.BLACK); 
 	        graphics_context.fillRect(0, 0, 192, 160); 
 
@@ -54,20 +64,18 @@ public class Main extends Application implements WspStencil {
 	        Scene scene = new Scene(group, 192, 160); 
 	        stage.setScene(scene); 
 	        stage.show(); 
-	        
+		        
+	        i = 0; // Remove later.
 	       
 	        clock = System.nanoTime();
 	        AnimationTimer animator = new AnimationTimer() {
-	        	 float i = 0;
 	            @Override
 	            public void handle(long arg0) {
 	                long current_time = System.nanoTime();
 	                double dt = (double) ((current_time - clock) / 1000000000.0);
 	                if (0.03 <= dt) {
-	                	i += dt * 100;
-	                	System.out.println(dt);
-		   	        	graphics_context.setFill(Color.WHITE); 
-		   	 	       graphics_context.fillRect(0, 0, 192, i); 
+	                	update(dt);
+	                	draw(dt);
 	                	clock = current_time;
 	                }
 	                
