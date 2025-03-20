@@ -44,18 +44,6 @@ public class Main extends Application implements WspStencil {
 		}
 	}
 
-	public Vector2 getScreenResolution() {
-		return this.resolution;
-	};
-
-	public Vector2 getScaleMultiplier() {
-		return this.scaleMultiplier;
-	};
-
-	public float getAspectRatio() {
-		return this.aspectRatio;
-	};
-
 	public void update(double dt) {
 		player.update(dt);
 		for (int i=0; i < aliens.size(); i++) {
@@ -90,6 +78,16 @@ public class Main extends Application implements WspStencil {
 							shouldExitLoop = true;
 							break;
 						}
+					}
+				}
+			} else {
+				Vector2 distance = Vector2.sub(player.position, laser.position);
+				if (!player.dying) {
+					if (Math.abs(distance.x) < player.image.spriteSize.x/2 && Math.abs(distance.y) < player.image.spriteSize.y/2) {
+						player.kill();
+						laser.kill();
+						shouldExitLoop = true;
+						break;
 					}
 				}
 			}
@@ -138,12 +136,16 @@ public class Main extends Application implements WspStencil {
 		stage.setScene(scene);
 		stage.show();
 		
-		player = new Player(new Vector2(resolution.x / 2, resolution.y - 20), 0, resolution.x);
-		lasers = new ArrayList<Laser>();
-		laserImage = new Image(getClass().getResource("/assets/images/sprites/lasers.png").toExternalForm());
+		
 		selectedAlien = -1;
-		aliens = new ArrayList<Alien>();
+		
+		Image playerImage = new Image(getClass().getResource("/assets/images/sprites/player.png").toExternalForm());
+		laserImage = new Image(getClass().getResource("/assets/images/sprites/lasers.png").toExternalForm());
 		Image alienImage = new Image(getClass().getResource("/assets/images/sprites/aliens.png").toExternalForm());
+		
+		player = new Player(playerImage, new Vector2(resolution.x / 2, resolution.y - 20), 0, resolution.x);
+		lasers = new ArrayList<Laser>();
+		aliens = new ArrayList<Alien>();
 		for (int y=1; y < 4; y++) {
 			for (int x=1; x < 10; x++) {
 				Alien newAlien = new Alien(new Vector2(x * 20 - 5, y * 20), alienImage, new Vector2(16, 8));
