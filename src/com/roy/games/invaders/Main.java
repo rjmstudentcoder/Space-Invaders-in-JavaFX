@@ -39,7 +39,7 @@ public class Main extends Application implements WspStencil {
 
 	 public void start(Stage stage) 
 	    { 
-	        stage.setTitle("creating canvas"); 
+	        stage.setTitle("Space Invaders"); 
 
 	        Canvas canvas = new Canvas(); 
 	        canvas.setHeight(160); 
