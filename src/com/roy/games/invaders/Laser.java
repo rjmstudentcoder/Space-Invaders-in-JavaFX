@@ -20,4 +20,11 @@ public class Laser extends Entity {
 		image.spriteSize = new Vector2(6, 8);
 		image.size = new Vector2(6, 8);
 	}
+	
+	public void update(double dt) {
+		super.update(dt);
+		if (position.y < 4 || position.y > 200) {
+			kill();
+		}
+	}
 }
