@@ -51,17 +51,20 @@ public class Main extends Application implements WspStencil {
 
 	 public void start(Stage stage) { 
 	        stage.setTitle("Space Invaders"); 
+	        
+	        resolution = new Vector2(192, 160);
+	        aspectRatio = resolution.y / resolution.x;
 
 	        canvas = new Canvas(); 
-	        canvas.setHeight(160); 
-	        canvas.setWidth(192); 
+	        canvas.setHeight(resolution.y); 
+	        canvas.setWidth(resolution.x);
 
 	        graphics_context =  canvas.getGraphicsContext2D(); 
 	        graphics_context.setFill(Color.BLACK); 
-	        graphics_context.fillRect(0, 0, 192, 160); 
+	        graphics_context.fillRect(0, 0, resolution.x, resolution.y); 
 
 	        Group group = new Group(canvas); 
-	        Scene scene = new Scene(group, 192, 160); 
+	        Scene scene = new Scene(group, resolution.x, resolution.y); 
 	        stage.setScene(scene); 
 	        stage.show(); 
 		        
