@@ -10,7 +10,7 @@ public class Alien extends Entity {
 	float laserTick;
 	
 	Alien(Vector2 newOrigin, Image newImage, Vector2 imageSize) {
-		super(newOrigin, new Vector2(0, 0), newImage, imageSize, new Vector2(0, 0));
+		super(newOrigin,Vector2.zero(), newImage, imageSize, Vector2.zero());
 		origin = new Vector2(newOrigin);
 		laserTick = 0;
 		setAnimationInfo(0.2, 1, 1, true);
