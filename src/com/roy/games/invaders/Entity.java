@@ -19,11 +19,11 @@ public class Entity {
 	public double spriteSwapSpeed;
 	public int spriteFrames;
 	public boolean animationAxis;
-	
+
 	public void kill() {
 		dying = true;
 	}
-	
+
 	public Entity(Vector2 newPosition, Vector2 newVelocity, Image newImage, Vector2 imageSize, Vector2 spriteOffset) {
 		position = new Vector2(newPosition);
 		image = new StencilImage(imageSize, newImage);
@@ -38,19 +38,19 @@ public class Entity {
 		spriteFrames = 3;
 		animationAxis = false;
 	}
-	
+
 	public void setSpriteOffsetOrigin(Vector2 offset) {
 		initialSpriteOffset = new Vector2(offset);
 		image.setOffset(offset);
 	}
-	
-	public void setAnimationInfo( double newAfterlife, double newSwapSpeed,int newSpriteFrames, boolean axis) {
+
+	public void setAnimationInfo(double newAfterlife, double newSwapSpeed, int newSpriteFrames, boolean axis) {
 		afterlife = newAfterlife;
-		spriteSwapSpeed =newSwapSpeed;
+		spriteSwapSpeed = newSwapSpeed;
 		spriteFrames = newSpriteFrames;
 		animationAxis = axis;
 	}
-	
+
 	public void update(double dt) {
 		if (dying) {
 			deathTick += dt;
@@ -74,7 +74,7 @@ public class Entity {
 						image.setOffset(new Vector2(initialSpriteOffset.x, initialSpriteOffset.y));
 					}
 				}
-				
+
 			}
 			position.x += velocity.x * dt;
 			position.y += velocity.y * dt;
