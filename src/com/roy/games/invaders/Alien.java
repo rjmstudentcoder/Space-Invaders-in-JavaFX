@@ -19,7 +19,6 @@ public class Alien extends Entity {
 	public void kill() {
 		super.kill();
 		image.setOffset(new Vector2(48, 0));
-		image.spriteSize = new Vector2(16, 8);
 	}
 
 	public void update(double dt) {
