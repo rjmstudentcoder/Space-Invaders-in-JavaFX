@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.canvas.*;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.Group;
@@ -111,11 +112,20 @@ public class Main extends Application implements WspStencil {
 	}
 
 	public void draw(double dt) {
+		
 		drawImage(player.image, player.position, player.image.size, 0);
 		drawEntityArray(aliens);
 		drawEntityArray(lasers);
 		graphics_context.setFill(Color.WHITE);
 		graphics_context.fillRect(0, 0, resolution.x * scaleMultiplier.x, 1 * scaleMultiplier.y);
+		graphics_context.setGlobalBlendMode(BlendMode.MULTIPLY);
+		graphics_context.setFill(Color.LIGHTGREEN);
+		graphics_context.fillRect(0, 30, resolution.x * scaleMultiplier.x, 90 * scaleMultiplier.x);
+		graphics_context.setFill(Color.RED);
+		graphics_context.fillRect(0, 0, resolution.x * scaleMultiplier.x, 8 * scaleMultiplier.x);
+		graphics_context.setFill(Color.LIGHTBLUE);
+		graphics_context.fillRect(0, 91, resolution.x * scaleMultiplier.x, resolution.y * scaleMultiplier.x);
+		graphics_context.setGlobalBlendMode(BlendMode.SRC_OVER);
 	}
 
 	public void start(Stage stage) {
