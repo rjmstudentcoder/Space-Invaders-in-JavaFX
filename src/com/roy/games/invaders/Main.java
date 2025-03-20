@@ -54,11 +54,10 @@ public class Main extends Application implements WspStencil {
 		for (int i=0; i < aliens.size(); i++) {
 			Alien alien = aliens.get(i);
 			alien.update(dt);
-			if (alien.deathTick > 0.3) {
+			if (alien.dead) {
 				aliens.remove(alien);
 				break;
-			}
-			if (!alien.dead && alien.laserTick > 1) {
+			} else if (alien.laserTick > 1) {
 				alien.laserTick = 0;
 				lasers.add(new Laser(new Vector2(Vector2.add(alien.position, new Vector2(0, 5))), new Vector2(0, 20), laserImage, new Vector2(3, 8), new Vector2(0, 0), true));
 			}
@@ -70,21 +69,20 @@ public class Main extends Application implements WspStencil {
 			}
 			Laser laser = lasers.get(i);
 			laser.update(dt);
-			if (laser.deathTick > 0.25) {
+			if (laser.dead) {
 				lasers.remove(laser);
 				break;
-			}
-			if (!laser.dead && laser.evil == false) {
+			} else if (laser.evil == false) {
 				for (int i2=0; i2 < aliens.size(); i2++) {
 					Alien alien = aliens.get(i2);
 					Vector2 distance = Vector2.sub(alien.position, laser.position);
-					if (Math.abs(distance.x) < alien.image.spriteSize.x/2 && Math.abs(distance.y) < alien.image.spriteSize.y/2) {
-						//aliens.remove(alien);
-						//lasers.remove(laser);
-						alien.dead = true;
-						laser.dead = true;
-						shouldExitLoop = true;
-						break;
+					if (!alien.dying) {
+						if (Math.abs(distance.x) < alien.image.spriteSize.x/2 && Math.abs(distance.y) < alien.image.spriteSize.y/2) {
+							alien.kill();
+							laser.kill();
+							shouldExitLoop = true;
+							break;
+						}
 					}
 				}
 			}
@@ -151,7 +149,7 @@ public class Main extends Application implements WspStencil {
 				if (y > 1) {
 					newAlien.motionAngle += (Math.PI  / 2) * y +( x )  / 2;
 				}
-				newAlien.image.setOffset(new Vector2((y - 1)*newAlien.image.spriteSize.x, 0));
+				newAlien.setSpriteOffsetOrigin(new Vector2((y - 1)*newAlien.image.spriteSize.x, 0));
 				aliens.add(newAlien);
 			}
 		}
@@ -159,7 +157,6 @@ public class Main extends Application implements WspStencil {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent keyEvent) {
-				EventType<KeyEvent> event = keyEvent.getEventType();
 				KeyCode code = keyEvent.getCode();
 				if (code == KeyCode.LEFT && player.controlDeltaX != 1) {
 					player.controlDeltaX = -1;
