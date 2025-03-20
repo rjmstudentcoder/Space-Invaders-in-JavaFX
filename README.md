@@ -29,3 +29,7 @@ I think it's worth noting what I learned during this exercise.
 
 I found that planning out a project beforehand is important. I had initially written many lines of code with the expectation that I would use them. Over the past few days, however, I found much more efficient or intuitive methods to use. 
 Because I worked on the project without a plan, I wrote code I didn't need, and as a result, lost time.
+
+
+# Resources
+This project would not have been possible without W3Schools' Java tutorials and Joel Murach's *Murach's Java Programming*.
