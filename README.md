@@ -8,5 +8,3 @@ This project requires [JavaFX](https://openjfx.io/).
 - Add bullets for the spaceship.
 - Add alien-bullet interaction.
 - Add the special ship.
-- Add a win screen.
-- Add a lose screen.
