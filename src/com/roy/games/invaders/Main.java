@@ -34,11 +34,13 @@ public class Main extends Application implements WspStencil {
 
 	public void drawImage(StencilImage image, Vector2 position, Vector2 size, int rotation) {
 		graphics_context.drawImage(image.image, image.spriteOffset.x, image.spriteOffset.y, image.spriteSize.x,
-				image.spriteSize.y, Math.floor(position.x - size.x / 2) * scaleMultiplier.x, Math.floor(position.y - size.y / 2) * scaleMultiplier.x, size.x * scaleMultiplier.x, size.y * scaleMultiplier.x);
+				image.spriteSize.y, Math.floor(position.x - size.x / 2) * scaleMultiplier.x,
+				Math.floor(position.y - size.y / 2) * scaleMultiplier.x, size.x * scaleMultiplier.x,
+				size.y * scaleMultiplier.x);
 	};
-	
+
 	public void drawEntityArray(ArrayList<? extends Entity> entities) {
-		for (int i=0; i < entities.size(); i++) {
+		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			drawImage(entity.image, entity.position, entity.image.size, 0);
 		}
@@ -46,7 +48,7 @@ public class Main extends Application implements WspStencil {
 
 	public void update(double dt) {
 		player.update(dt);
-		for (int i=0; i < aliens.size(); i++) {
+		for (int i = 0; i < aliens.size(); i++) {
 			Alien alien = aliens.get(i);
 			alien.update(dt);
 			if (alien.dead) {
@@ -54,11 +56,12 @@ public class Main extends Application implements WspStencil {
 				break;
 			} else if (alien.laserTick > 1) {
 				alien.laserTick = 0;
-				lasers.add(new Laser(new Vector2(Vector2.add(alien.position, new Vector2(0, 5))), new Vector2(0, 20), laserImage, new Vector2(3, 8), new Vector2(0, 0), true));
+				lasers.add(new Laser(new Vector2(Vector2.add(alien.position, new Vector2(0, 5))), new Vector2(0, 20),
+						laserImage, new Vector2(3, 8), Vector2.zero(), true));
 			}
 		}
 		boolean shouldExitLoop = false;
-		for (int i=0; i < lasers.size(); i++) {
+		for (int i = 0; i < lasers.size(); i++) {
 			if (shouldExitLoop) {
 				break;
 			}
@@ -68,11 +71,12 @@ public class Main extends Application implements WspStencil {
 				lasers.remove(laser);
 				break;
 			} else if (laser.evil == false) {
-				for (int i2=0; i2 < aliens.size(); i2++) {
+				for (int i2 = 0; i2 < aliens.size(); i2++) {
 					Alien alien = aliens.get(i2);
 					Vector2 distance = Vector2.sub(alien.position, laser.position);
 					if (!alien.dying) {
-						if (Math.abs(distance.x) < alien.image.spriteSize.x/2 && Math.abs(distance.y) < alien.image.spriteSize.y/2) {
+						if (Math.abs(distance.x) < alien.image.spriteSize.x / 2
+								&& Math.abs(distance.y) < alien.image.spriteSize.y / 2) {
 							alien.kill();
 							laser.kill();
 							shouldExitLoop = true;
@@ -83,7 +87,8 @@ public class Main extends Application implements WspStencil {
 			} else {
 				Vector2 distance = Vector2.sub(player.position, laser.position);
 				if (!player.dying) {
-					if (Math.abs(distance.x) < player.image.spriteSize.x/2 && Math.abs(distance.y) < player.image.spriteSize.y/2) {
+					if (Math.abs(distance.x) < player.image.spriteSize.x / 2
+							&& Math.abs(distance.y) < player.image.spriteSize.y / 2) {
 						player.kill();
 						laser.kill();
 						shouldExitLoop = true;
@@ -96,13 +101,13 @@ public class Main extends Application implements WspStencil {
 		if (selectedAlien < aliens.size()) {
 			if (selectedAlien == -1 || aliens.get(selectedAlien).laserTick == 0) {
 				selectedAlien = (int) (Math.random() * aliens.size());
-				aliens.get(selectedAlien).laserTick = (float)0.1;
+				aliens.get(selectedAlien).laserTick = (float) 0.1;
 			}
 			aliens.get(selectedAlien).laserTick += dt;
 		} else {
 			selectedAlien = (int) (Math.random() * aliens.size());
 		}
-	
+
 	}
 
 	public void draw(double dt) {
@@ -115,9 +120,9 @@ public class Main extends Application implements WspStencil {
 
 	public void start(Stage stage) {
 		stage.setTitle("Space Invaders");
-		
+
 		scaleMultiplier = new Vector2(3, 3);
-		
+
 		resolution = new Vector2(192, 160);
 		aspectRatio = resolution.y / resolution.x;
 
@@ -135,24 +140,23 @@ public class Main extends Application implements WspStencil {
 		stage.setResizable(false);
 		stage.setScene(scene);
 		stage.show();
-		
-		
+
 		selectedAlien = -1;
-		
+
 		Image playerImage = new Image(getClass().getResource("/assets/images/sprites/player.png").toExternalForm());
 		laserImage = new Image(getClass().getResource("/assets/images/sprites/lasers.png").toExternalForm());
 		Image alienImage = new Image(getClass().getResource("/assets/images/sprites/aliens.png").toExternalForm());
-		
+
 		player = new Player(playerImage, new Vector2(resolution.x / 2, resolution.y - 20), 0, resolution.x);
 		lasers = new ArrayList<Laser>();
 		aliens = new ArrayList<Alien>();
-		for (int y=1; y < 4; y++) {
-			for (int x=1; x < 10; x++) {
+		for (int y = 1; y < 4; y++) {
+			for (int x = 1; x < 10; x++) {
 				Alien newAlien = new Alien(new Vector2(x * 20 - 5, y * 20), alienImage, new Vector2(16, 8));
 				if (y > 1) {
-					newAlien.motionAngle += (Math.PI  / 2) * y +( x )  / 2;
+					newAlien.motionAngle += (Math.PI / 2) * y + (x) / 2;
 				}
-				newAlien.setSpriteOffsetOrigin(new Vector2((y - 1)*newAlien.image.spriteSize.x, 0));
+				newAlien.setSpriteOffsetOrigin(new Vector2((y - 1) * newAlien.image.spriteSize.x, 0));
 				aliens.add(newAlien);
 			}
 		}
@@ -166,7 +170,8 @@ public class Main extends Application implements WspStencil {
 				} else if (code == KeyCode.RIGHT && player.controlDeltaX != -1) {
 					player.controlDeltaX = 1;
 				} else if (code == KeyCode.Z || code == KeyCode.SPACE) {
-					lasers.add(new Laser(new Vector2(Vector2.add(player.position, new Vector2(0, -5))), new Vector2(0, -20), laserImage, new Vector2(3, 8), new Vector2(24, 0), false));
+					lasers.add(new Laser(new Vector2(Vector2.add(player.position, new Vector2(0, -5))),
+							new Vector2(0, -20), laserImage, new Vector2(3, 8), new Vector2(24, 0), false));
 				}
 			}
 		});
